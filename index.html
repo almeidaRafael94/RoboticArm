@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!--
+The simple vertex and fragment shaders.
+Using a vertex coordinate buffer and a vertex colour buffer.
+Passing the Model-View Matrix and the Projection Matrix. 
+-->
+
+<script id="shader-vs" type="x-shader/x-vertex">
+	
+    attribute vec3 aVertexPosition;
+
+    attribute vec3 aVertexColor;
+    
+    uniform mat4 uMVMatrix;
+
+    uniform mat4 uPMatrix;
+
+    varying vec4 vertexColor;
+    
+    void main(void) {
+		
+		// To allow seeing the points drawn
+		
+		gl_PointSize = 5.0;
+		
+		// Just converting the (x,y,z) vertices to Homogeneous Coord.
+		
+		// And multiplying by the Projection and the Model-View matrix
+		
+        gl_Position = uPMatrix * uMVMatrix  * vec4(aVertexPosition, 1.0);
+        
+        // Converting the RGB color value to RGBA
+        
+        vertexColor = vec4(aVertexColor, 1.0);
+    }
+</script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+
+	precision mediump float;
+	
+	varying vec4 vertexColor;
+	
+	void main(void) {
+		
+		// Using the passed vertex color
+		
+		gl_FragColor = vertexColor;
+	}
+
+</script>
+
+<!-- The JS files -->
+
+<script type="text/javascript" src="webgl-utils.js"></script>
+
+<script type="text/javascript" src="maths.js"></script>
+
+<script type="text/javascript" src="models.js"></script>
+
+<script type="text/javascript" src="light/lightSources.js"></script>
+
+<script type="text/javascript" src="initShaders.js"></script>
+
+<script type="text/javascript" src="main.js"></script>
+
+<script type="text/javascript" src="objectModels/model.js"></script>
+
+<script type="text/javascript" src="light/ilumination.js"></script>
+
+<script type="text/javascript" src="objectModels/loader.js"></script>
+
+<script type="text/javascript" src="input/keyboard.js"></script>
+
+
+</head>
+
+
+<body onload="runWebGL();">
+
+	<div class="container-fluid" style="background-color: lightgrey;">
+
+		<div style="float: right; ">
+			<h4><b>Robotic arm webGL project 2016/2017</b></h4>
+
+			<input id="enable" type="checkbox"> Enable/Disable slider controls<br>
+
+			<br>
+			
+			<form oninput="b0.value=baseSlider.value" >
+			Base rotation angle
+			<output name="b0" for="baseSlider" ></output>
+  			<input id="baseSlider" type="range" value="180" min="0" max="360">
+			</form>
+
+			<form oninput="b1.value=block1Slider.value">
+			Axis 1 rotation angle
+			<output name="b1" for="block1Slider"></output>
+  			<input id="block1Slider" type="range" value="0" min="-42" max="42">
+			
+			</form> 
+
+			<form oninput="b2.value=block2Slider.value">
+			Axis 2 rotation angle
+			<output name="b2" for="block2Slider"></output>
+  			<input id="block2Slider" type="range" value="0" min="-90" max="90">
+			</form> 
+
+			<form oninput="b3.value=block3Slider.value">
+			Axis 3 rotation angle
+			<output name="b3" for="block3Slider"></output>
+  			<input id="block3Slider" type="range" value="0" min="-90" max="90">
+			</form>
+
+			<form oninput="b4.value=block4Slider.value">
+			Axis 4 rotation angle
+			<output name="b4" for="block4Slider"></output>
+  			<input id="block4Slider" type="range" value="0" min="-90" max="90">
+			</form> 
+
+			<form oninput="b5.value=block5Slider.value">
+			Axis 5 rotation angle
+			<output name="b5" for="block5Slider"></output>
+  			<input id="block5Slider" type="range" value="0" min="-90" max="90">
+			</form>
+
+			<br>
+
+			<div id="main" style="width: 474px; height: 213px;">
+   				<img src="images/controls.png" height="110" />
+			</div>
+		</div>
+		
+		<div class="container-fluid" style="float: left; ">
+			<canvas id="canvas" style="border:1px  solid black; margin-top: 10px; background: url('images/scene.jpg')" width="700" height="600"></canvas>  
+		</div>
+
+	</div>
+</body>
+
+</html>
